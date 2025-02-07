@@ -519,7 +519,7 @@ class Az_Dynamic_Pricing_Widget extends \Elementor\Widget_Base {
                         yearlyPrice.parentElement.style.display = 'block';
                         perUserPrice.textContent = prices.perUser.toFixed(2);
                         yearlyPrice.textContent = prices.yearly.toLocaleString();
-                        teamButton.textContent = '<?php echo $settings['contact_button_text']; ?>';
+                        teamButton.textContent = 'Get Started';
                     }
                 });
 
