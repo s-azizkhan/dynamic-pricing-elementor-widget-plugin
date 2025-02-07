@@ -77,12 +77,12 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-az-custom-elementor-widget
  */
 function run_az_custom_elementor_widget() {
 
-	if (!did_action('elementor/loaded')) {
-        add_action('admin_notices', function () {
-            echo '<div class="error"><p>Az Custom Elementor Widget requires Elementor to be installed and activated.</p></div>';
-        });
-        return;
-    }
+	// if (!did_action('elementor/loaded')) {
+    //     add_action('admin_notices', function () {
+    //         echo '<div class="error"><p>Az Custom Elementor Widget requires Elementor to be installed and activated.</p></div>';
+    //     });
+    //     return;
+    // }
 	$plugin = new Az_Custom_Elementor_Widget();
 	$plugin->run();
 
