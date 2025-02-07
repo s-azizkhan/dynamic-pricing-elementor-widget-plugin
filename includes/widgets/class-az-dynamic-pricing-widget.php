@@ -136,7 +136,7 @@ class Az_Dynamic_Pricing_Widget extends \Elementor\Widget_Base {
             }
             .az-tab-button {
                 padding: 12px 24px;
-                background: transparent;
+                background: transparent !important;
                 color: #666;
                 border: none;
                 border-radius: 25px;
@@ -146,10 +146,10 @@ class Az_Dynamic_Pricing_Widget extends \Elementor\Widget_Base {
                 font-size: 16px;
             }
             .az-tab-button:hover {
-                background: rgba(0,0,0,0.05);
+                background: rgba(0,0,0,0.05) !important;
             }
             .az-tab-button.active {
-                background: <?php echo $primary_color; ?>;
+                background: <?php echo $primary_color; ?> !important;
                 color: #fff;
                 box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             }
