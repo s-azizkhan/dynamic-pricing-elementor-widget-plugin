@@ -34,6 +34,15 @@ class Az_Dynamic_Pricing_Widget extends \Elementor\Widget_Base
         );
 
         $this->add_control(
+            'solo_price',
+            [
+                'label' => __('Solo Plan Price ($)', 'az-custom-elementor-widget'),
+                'type' => \Elementor\Controls_Manager::NUMBER,
+                'default' => 10,
+            ]
+        );
+
+        $this->add_control(
             'pro_price',
             [
                 'label' => __('Professional Plan Price ($)', 'az-custom-elementor-widget'),
@@ -146,6 +155,74 @@ class Az_Dynamic_Pricing_Widget extends \Elementor\Widget_Base
                 'label' => __('Agency Hub Tab Text', 'az-custom-elementor-widget'),
                 'type' => \Elementor\Controls_Manager::TEXT,
                 'default' => __('Agency Hub', 'az-custom-elementor-widget'),
+                'dynamic' => [
+                    'active' => true,
+                ],
+            ]
+        );
+
+        // Solo Plan Card
+        $this->add_control(
+            'solo_card_title_text',
+            [
+                'label' => __('Solo Card Title', 'az-custom-elementor-widget'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'default' => __('Solo', 'az-custom-elementor-widget'),
+                'dynamic' => [
+                    'active' => true,
+                ],
+            ]
+        );
+        $this->add_control(
+            'solo_card_subtitle_text',
+            [
+                'label' => __('Solo Card Subtitle', 'az-custom-elementor-widget'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'default' => __('Perfect for individual professionals', 'az-custom-elementor-widget'),
+                'dynamic' => [
+                    'active' => true,
+                ],
+            ]
+        );
+        $this->add_control(
+            'solo_price_suffix_text',
+            [
+                'label' => __('Solo Price Suffix', 'az-custom-elementor-widget'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'default' => __('/month', 'az-custom-elementor-widget'),
+                'dynamic' => [
+                    'active' => true,
+                ],
+            ]
+        );
+        $this->add_control(
+            'solo_save_badge_text',
+            [
+                'label' => __('Solo Save Badge Text', 'az-custom-elementor-widget'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'default' => __('Save 25%', 'az-custom-elementor-widget'),
+                'dynamic' => [
+                    'active' => true,
+                ],
+            ]
+        );
+        $this->add_control(
+            'solo_billing_info_text',
+            [
+                'label' => __('Solo Billing Info', 'az-custom-elementor-widget'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'default' => __('Billed yearly', 'az-custom-elementor-widget'),
+                'dynamic' => [
+                    'active' => true,
+                ],
+            ]
+        );
+        $this->add_control(
+            'solo_button_text',
+            [
+                'label' => __('Solo Button Text', 'az-custom-elementor-widget'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'default' => __('Start Free Trial', 'az-custom-elementor-widget'),
                 'dynamic' => [
                     'active' => true,
                 ],
@@ -643,7 +720,7 @@ class Az_Dynamic_Pricing_Widget extends \Elementor\Widget_Base
                 color: white;
                 padding: 10px 20px;
                 border: none;
-                border-radius: 20px;
+                border-radius: 18px;
                 font-size: 16px;
                 font-weight: 600;
                 transition: all 0.3s ease;
@@ -651,7 +728,7 @@ class Az_Dynamic_Pricing_Widget extends \Elementor\Widget_Base
             }
 
             .az-free-trial-btn:hover {
-                border-radius: 30px;
+                border-radius: 20px;
                 transform: translateY(-2px);
                 box-shadow: 0 5px 15px <?php echo $primary_color; ?>40;
             }
@@ -696,11 +773,26 @@ class Az_Dynamic_Pricing_Widget extends \Elementor\Widget_Base
                 transform: translateY(-50%);
                 width: 20px;
                 height: 20px;
-                background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300D2D2'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z'/%3E%3C/svg%3E") no-repeat center;
+                background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='<?php echo str_replace('#', '%23', $primary_color); ?>'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z'/%3E%3C/svg%3E") no-repeat center;
                 background-size: contain;
             }
 
+            .double-plan {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                column-gap: 20px;
+                flex-direction: column;
+            }
+
+
             @media (min-width: 768px) {
+                .double-plan {
+                    flex-direction: row;
+                    row-gap: 20px;
+
+                }
+
                 .az-save-badge {
                     margin-left: 10px;
                 }
@@ -748,32 +840,63 @@ class Az_Dynamic_Pricing_Widget extends \Elementor\Widget_Base
 
             <!-- Professional Plan -->
             <div class="az-pricing-cards active" id="professional-cards">
-                <div class="az-pricing-card">
-                    <div class="az-card-header">
-                        <h3><?php echo esc_html($settings['pro_card_title_text']); ?></h3>
-                        <p><?php echo esc_html($settings['pro_card_subtitle_text']); ?></p>
+                <div class="double-plan">
+
+                    <div class="az-pricing-card">
+                        <div class="az-card-header">
+                            <h3><?php echo esc_html($settings['solo_card_title_text']); ?></h3>
+                            <p><?php echo esc_html($settings['solo_card_subtitle_text']); ?></p>
+                        </div>
+
+                        <div class="az-price">
+                            $<?php echo esc_html($settings['solo_price']); ?><small><?php echo esc_html($settings['solo_price_suffix_text']); ?></small>
+                            <span class="az-save-badge"><?php echo esc_html($settings['solo_save_badge_text']); ?></span>
+                        </div>
+                        <div><?php echo esc_html($settings['solo_billing_info_text']); ?></div>
+
+                        <button class="az-free-trial-btn"><?php echo esc_html($settings['solo_button_text']); ?></button>
+
+                        <div class="az-section-title"><?php echo esc_html($settings['features_section_title_text']); ?></div>
+                        <ul class="az-features">
+                            <li>No Branding of SyncSignature</li>
+                            <li>Up to 10 Professional Signatures</li>
+                            <li>Copy/Paste Email Signature</li>
+                            <li>Profile Picture Maker</li>
+                            <li>PRO templates</li>
+                            <li>Email Signature Analytics</li>
+                            <li>Advanced template editor</li>
+                        </ul>
+                        <!-- <button class="az-button">Get Started</button> -->
                     </div>
 
-                    <div class="az-price">
-                        $<?php echo esc_html($pro_price); ?><small><?php echo esc_html($settings['pro_price_suffix_text']); ?></small>
-                        <span class="az-save-badge"><?php echo esc_html($settings['pro_save_badge_text']); ?></span>
+                    <div class="az-pricing-card">
+                        <div class="az-card-header">
+                            <h3><?php echo esc_html($settings['pro_card_title_text']); ?></h3>
+                            <p><?php echo esc_html($settings['pro_card_subtitle_text']); ?></p>
+                        </div>
+
+                        <div class="az-price">
+                            $<?php echo esc_html($pro_price); ?><small><?php echo esc_html($settings['pro_price_suffix_text']); ?></small>
+                            <span class="az-save-badge"><?php echo esc_html($settings['pro_save_badge_text']); ?></span>
+                        </div>
+                        <div><?php echo esc_html($settings['pro_billing_info_text']); ?></div>
+
+                        <button class="az-free-trial-btn"><?php echo esc_html($settings['pro_button_text']); ?></button>
+
+                        <div class="az-section-title"><?php echo esc_html($settings['features_section_title_text']); ?></div>
+                        <ul class="az-features">
+                            <li>No Branding of SyncSignature</li>
+                            <li>Up to 10 Professional Signatures</li>
+                            <li>Copy/Paste Email Signature</li>
+                            <li>Profile Picture Maker</li>
+                            <li>PRO templates</li>
+                            <li>Email Signature Analytics</li>
+                            <li>Advanced template editor</li>
+                        </ul>
+                        <!-- <button class="az-button">Get Started</button> -->
                     </div>
-                    <div><?php echo esc_html($settings['pro_billing_info_text']); ?></div>
-
-                    <button class="az-free-trial-btn"><?php echo esc_html($settings['pro_button_text']); ?></button>
-
-                    <div class="az-section-title"><?php echo esc_html($settings['features_section_title_text']); ?></div>
-                    <ul class="az-features">
-                        <li>No Branding of SyncSignature</li>
-                        <li>Up to 10 Professional Signatures</li>
-                        <li>Copy/Paste Email Signature</li>
-                        <li>Profile Picture Maker</li>
-                        <li>PRO templates</li>
-                        <li>Email Signature Analytics</li>
-                        <li>Advanced template editor</li>
-                    </ul>
-                    <!-- <button class="az-button">Get Started</button> -->
                 </div>
+
             </div>
 
             <!-- Teams Plan -->
@@ -804,7 +927,7 @@ class Az_Dynamic_Pricing_Widget extends \Elementor\Widget_Base
                             min="5" max="100" value="5" step="5">
                     </div>
 
-                    <button id="teams-button" class="az-button"><?php echo esc_html($settings['teams_button_text']); ?></button>
+                    <button id="teams-button" class="az-free-trial-btn"><?php echo esc_html($settings['teams_button_text']); ?></button>
 
                     <div class="az-section-title"><?php echo esc_html($settings['features_section_title_text']); ?></div>
                     <ul class="az-features">
@@ -827,7 +950,7 @@ class Az_Dynamic_Pricing_Widget extends \Elementor\Widget_Base
                         <h3><?php echo esc_html($settings['agency_card_title_text']); ?></h3>
                         <p><?php echo esc_html($settings['agency_card_subtitle_text']); ?></p>
                     </div>
-                    <button class="az-button"><?php echo esc_html($settings['contact_button_text']); ?></button>
+                    <button class="az-free-trial-btn"><?php echo esc_html($settings['contact_button_text']); ?></button>
 
                     <div class="az-section-title"><?php echo esc_html($settings['features_section_title_text']); ?></div>
                     <ul class="az-features">
