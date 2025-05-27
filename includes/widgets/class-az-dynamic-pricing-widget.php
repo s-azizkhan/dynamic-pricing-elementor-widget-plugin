@@ -528,6 +528,7 @@ class Az_Dynamic_Pricing_Widget extends \Elementor\Widget_Base
                 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
             }
 
+
             .az-pricing-cards {
                 display: none;
                 grid-template-columns: 1fr;
@@ -553,6 +554,7 @@ class Az_Dynamic_Pricing_Widget extends \Elementor\Widget_Base
                 position: relative;
                 display: flex;
                 flex-direction: column;
+                width: 100%;
             }
 
             .az-pricing-card:hover {
@@ -760,7 +762,7 @@ class Az_Dynamic_Pricing_Widget extends \Elementor\Widget_Base
             }
 
             .az-features {
-                margin: 0 0 0px 0;
+                margin: 0 !important;
                 padding: 0;
                 flex-grow: 1;
             }
@@ -783,43 +785,43 @@ class Az_Dynamic_Pricing_Widget extends \Elementor\Widget_Base
                 align-items: center;
                 column-gap: 20px;
                 flex-direction: column;
+                width: 100%;
             }
+
+            #teams-cards,
+            #agency-cards {
+                padding: 0;
+            }
+
 
 
             @media (min-width: 768px) {
                 .double-plan {
                     flex-direction: row;
                     row-gap: 20px;
-
                 }
 
                 .az-save-badge {
                     margin-left: 10px;
                 }
-            }
 
-            @media (min-width: 768px) {
+                /* #teams-cards,
+                #agency-cards {
+                    padding: 0 110px;
+                } */
+
                 .az-pricing-cards {
                     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
                     gap: 30px;
+                    padding: 0;
                 }
-            }
 
-            @media (min-width: 768px) {
-                .az-pricing-card {
-                    padding: 40px;
-                }
-            }
-
-            @media (min-width: 768px) {
                 .az-team-price-parent {
                     flex-direction: row;
                     align-items: center;
                     justify-content: space-between;
                 }
-            }
 
-            @media (min-width: 768px) {
                 .az-team-yearly-price {
                     align-items: flex-end;
                 }
@@ -924,7 +926,7 @@ class Az_Dynamic_Pricing_Widget extends \Elementor\Widget_Base
                     <div class="az-slider-container">
                         <div class="az-floating-count" id="floating-user-count"><?php echo esc_html($settings['js_initial_user_count_text']); ?></div>
                         <input type="range" id="team-user-slider" class="az-slider"
-                            min="5" max="100" value="5" step="5">
+                            min="5" max="105" value="5" step="5">
                     </div>
 
                     <button id="teams-button" class="az-free-trial-btn"><?php echo esc_html($settings['teams_button_text']); ?></button>
@@ -1025,7 +1027,7 @@ class Az_Dynamic_Pricing_Widget extends \Elementor\Widget_Base
                 }
 
                 function updateFloatingCount() {
-                    const value = parseInt(elements.teamSlider.value);
+                    let value = parseInt(elements.teamSlider.value);
                     const min = parseInt(elements.teamSlider.min);
                     const max = parseInt(elements.teamSlider.max);
                     const sliderWidth = elements.teamSlider.offsetWidth;
@@ -1036,6 +1038,7 @@ class Az_Dynamic_Pricing_Widget extends \Elementor\Widget_Base
                     const position = valuePercentage * (sliderWidth - thumbWidth);
 
                     elements.floatingCount.style.left = `${position + (thumbWidth / 2)}px`;
+                    value = value > 100 ? "100+" : value;
                     elements.floatingCount.textContent = `${value} <?php echo esc_js($settings['js_users_suffix_text']); ?>`;
                 }
 
@@ -1044,7 +1047,7 @@ class Az_Dynamic_Pricing_Widget extends \Elementor\Widget_Base
                     elements.teamUserCount.textContent = users;
                     updateFloatingCount();
 
-                    if (users >= 100) {
+                    if (users > 100) {
                         elements.perUserPrice.parentElement.style.display = 'none';
                         elements.yearlyPrice.parentElement.style.display = 'none';
                         elements.teamPriceSection.style.display = 'none';
